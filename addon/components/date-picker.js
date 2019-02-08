@@ -112,7 +112,9 @@ export default Em.TextField.extend({
    * destroyed.
    */
   willDestroyElement: function() {
-    this.get('_picker').destroy();
+    if (this.get('_picker')) {
+        this.get('_picker').destroy();
+    }
     this._super();
   },
 
@@ -152,14 +154,16 @@ export default Em.TextField.extend({
         this._setControllerDate(d);
       }
     }
-    this.get('_picker').setDate(d.format());
+    if (this.get('_picker')) {
+        this.get('_picker').setDate(d.format());
+    }
   }.observes('date'),
   /**
    * Update Pikaday's minDate after bound `minDate` changed and also after
    * the initial `didInsertElement`.
    */
   setMinDate: function() {
-    if (!Em.isBlank(this.get('minDate'))) {
+    if (!Em.isBlank(this.get('minDate')) && this.get('_picker')) {
       this.get('_picker').setMinDate(this.get('minDate'));
     }
   }.observes('minDate'),
@@ -168,7 +172,7 @@ export default Em.TextField.extend({
    * the initial `didInsertElement`.
    */
   setMaxDate: function() {
-    if (!Em.isBlank(this.get('maxDate'))) {
+    if (!Em.isBlank(this.get('maxDate')) && this.get('_picker')) {
       this.get('_picker').setMaxDate(this.get('maxDate'));
     }
   }.observes('maxDate')
